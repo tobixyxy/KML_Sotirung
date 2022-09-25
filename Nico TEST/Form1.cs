@@ -31,8 +31,7 @@ namespace Nico_TEST
             if (txtPlz.Text == string.Empty && cbbLaender.SelectedIndex == 0)
             {
                 dgvDaten.DataSource = data;
-                dgvDaten.Columns["Styl"].Visible = false;
-                dgvDaten.Columns["Id"].Visible = false;
+                visibil();
             }
             else if (cbbLaender.SelectedIndex > 0)
             {
@@ -51,23 +50,17 @@ namespace Nico_TEST
                 if (cbbLaender.SelectedIndex != 0)
                 {
                     dgvDaten.DataSource =  sotirung("Bundesland", cbbLaender.SelectedItem.ToString());
-                    dgvDaten.Columns["Styl"].Visible = false;
-                    dgvDaten.Columns["Id"].Visible = false;
+                    visibil();
                     if (txtPlz.Text != string.Empty)
                     {
                         dgvDaten.DataSource = filter(sotirung("Bundesland", cbbLaender.SelectedItem.ToString()), txtPlz.Text);
-                        if (dgvDaten.DataSource != null && dgvDaten.DataSource.ToString() != "")
-                        {
-                            dgvDaten.Columns["Styl"].Visible = false;
-                            dgvDaten.Columns["Id"].Visible = false;
-                        }
+                        visibil();
                     }
                 }
                 else if (cbbLaender.SelectedIndex == 0)
                 {
                     dgvDaten.DataSource = data;
-                    dgvDaten.Columns["Styl"].Visible = false;
-                    dgvDaten.Columns["Id"].Visible = false;
+                    visibil();
                 }
             }
         }
@@ -81,14 +74,12 @@ namespace Nico_TEST
                     if (txtPlz.Text == string.Empty && cbbLaender.SelectedIndex == 0)
                     {
                         dgvDaten.DataSource = data;
-                        dgvDaten.Columns["Styl"].Visible = false;
-                        dgvDaten.Columns["Id"].Visible = false;
+                        visibil();
                     }
                     else if (cbbLaender.SelectedIndex != 0)
                     {
                         dgvDaten.DataSource = sotirung("Bundesland", cbbLaender.SelectedItem.ToString());
-                        dgvDaten.Columns["Styl"].Visible = false;
-                        dgvDaten.Columns["Id"].Visible = false;
+                        visibil();
                     }
                 }
                 else
@@ -96,18 +87,13 @@ namespace Nico_TEST
                     if (cbbLaender.SelectedIndex != 0)
                     {
                         dgvDaten.DataSource = filter(sotirung("Bundesland", cbbLaender.SelectedItem.ToString()), txtPlz.Text);
-                        if (dgvDaten.DataSource != null && dgvDaten.DataSource.ToString() !="")
-                        {
-                            dgvDaten.Columns["Styl"].Visible = false;
-                            dgvDaten.Columns["Id"].Visible = false;
-                        }
-                        
+                        visibil();
+
                     }
                     else
                     {
                         dgvDaten.DataSource = filter(data, txtPlz.Text);
-                        dgvDaten.Columns["Styl"].Visible = false;
-                        dgvDaten.Columns["Id"].Visible = false;
+                        visibil();
                     }
                 } 
             }       
@@ -175,6 +161,15 @@ namespace Nico_TEST
             return temp;
 
 
+        }
+
+        private void visibil()
+        {
+            if (dgvDaten.DataSource != null && dgvDaten.DataSource.ToString() != "")
+            {
+                dgvDaten.Columns["Styl"].Visible = false;
+                dgvDaten.Columns["Id"].Visible = false;
+            }
         }
 
         private void btAugaben_Click(object sender, EventArgs e)

@@ -15,8 +15,9 @@ namespace Nico_TEST
         public DataSet read()
         {
             string file = string.Empty;
-
-            using (OpenFileDialog ofd = new OpenFileDialog())
+            try
+            {
+                using (OpenFileDialog ofd = new OpenFileDialog())
             {
                 ofd.InitialDirectory = @"c:\";
                 ofd.Filter = "kml files (*.kml)|*.kml|All files (*.*)|*.*";
@@ -28,8 +29,7 @@ namespace Nico_TEST
                     file = ofd.FileName;
                 }
             }
-            try
-            {
+            
                 XmlReader reader = XmlReader.Create(file);
 
                 reader.Read();
@@ -41,6 +41,7 @@ namespace Nico_TEST
             catch (Exception)
             {
                 MessageBox.Show("Bitte Datei angeben");
+                return data;
                 throw;
             }
             
