@@ -41,10 +41,7 @@ namespace Nico_TEST
             else if (txtPlz.Text != string.Empty)
             {
                 sotirung("Bundesland", txtPlz.Text);
-            }
-            
-            //dgvDaten.Sort();
-            
+            }            
         }
 
         private void cbbLaender_SelectedIndexChanged(object sender, EventArgs e)
@@ -53,7 +50,18 @@ namespace Nico_TEST
             {
                 if (cbbLaender.SelectedIndex != 0)
                 {
-                    sotirung("Bundesland", cbbLaender.SelectedItem.ToString());
+                    dgvDaten.DataSource =  sotirung("Bundesland", cbbLaender.SelectedItem.ToString());
+                    dgvDaten.Columns["Styl"].Visible = false;
+                    dgvDaten.Columns["Id"].Visible = false;
+                    if (txtPlz.Text != string.Empty)
+                    {
+                        dgvDaten.DataSource = filter(sotirung("Bundesland", cbbLaender.SelectedItem.ToString()), txtPlz.Text);
+                        if (dgvDaten.DataSource != null && dgvDaten.DataSource.ToString() != "")
+                        {
+                            dgvDaten.Columns["Styl"].Visible = false;
+                            dgvDaten.Columns["Id"].Visible = false;
+                        }
+                    }
                 }
                 else if (cbbLaender.SelectedIndex == 0)
                 {
@@ -61,34 +69,51 @@ namespace Nico_TEST
                     dgvDaten.Columns["Styl"].Visible = false;
                     dgvDaten.Columns["Id"].Visible = false;
                 }
-
             }
         }
 
         private void txtPlz_TextChanged(object sender, EventArgs e)
         {
-            var d = data.Select("PLZ like " + txtPlz.Text);
-
-            if (txtPlz.Text == String.Empty)
+            if (data.Columns.Count > 0)
             {
-                if (txtPlz.Text == string.Empty && cbbLaender.SelectedIndex == 0)
+                if (txtPlz.Text == String.Empty)
                 {
-                    dgvDaten.DataSource = data;
-                    dgvDaten.Columns["Styl"].Visible = false;
-                    dgvDaten.Columns["Id"].Visible = false;
+                    if (txtPlz.Text == string.Empty && cbbLaender.SelectedIndex == 0)
+                    {
+                        dgvDaten.DataSource = data;
+                        dgvDaten.Columns["Styl"].Visible = false;
+                        dgvDaten.Columns["Id"].Visible = false;
+                    }
+                    else if (cbbLaender.SelectedIndex != 0)
+                    {
+                        dgvDaten.DataSource = sotirung("Bundesland", cbbLaender.SelectedItem.ToString());
+                        dgvDaten.Columns["Styl"].Visible = false;
+                        dgvDaten.Columns["Id"].Visible = false;
+                    }
                 }
-                else if (cbbLaender.SelectedIndex != 0)
+                else
                 {
-                    sotirung("Bundesland", cbbLaender.SelectedItem.ToString());
-                }
-            }
-            else
-            {
-                sotirung("Bundesland", txtPlz.Text);
-            }           
+                    if (cbbLaender.SelectedIndex != 0)
+                    {
+                        dgvDaten.DataSource = filter(sotirung("Bundesland", cbbLaender.SelectedItem.ToString()), txtPlz.Text);
+                        if (dgvDaten.DataSource != null && dgvDaten.DataSource.ToString() !="")
+                        {
+                            dgvDaten.Columns["Styl"].Visible = false;
+                            dgvDaten.Columns["Id"].Visible = false;
+                        }
+                        
+                    }
+                    else
+                    {
+                        dgvDaten.DataSource = filter(data, txtPlz.Text);
+                        dgvDaten.Columns["Styl"].Visible = false;
+                        dgvDaten.Columns["Id"].Visible = false;
+                    }
+                } 
+            }       
         }
         DataTable table = new DataTable();
-        public void sotirung(string Rows, string suche)
+        public DataTable sotirung(string Rows, string suche)
         {
             DataTable temp = data;
             table.Clear();
@@ -118,13 +143,37 @@ namespace Nico_TEST
                     row["Styl"] = thp.Table.Rows[i][5];
                     row["Id"] = thp.Table.Rows[i][6];
                     table.Rows.Add(row);
-
                 }
                 i++;
             }
+            /*
             dgvDaten.DataSource = table;
             dgvDaten.Columns["Styl"].Visible = false;
-            dgvDaten.Columns["Id"].Visible = false;
+            dgvDaten.Columns["Id"].Visible = false;*/
+            return table;
+
+        }
+
+        public DataTable filter(DataTable data, string plz)
+        {
+            DataTable temp = new DataTable();
+            if (data.Columns.Count > 0)
+            {
+                var sql = "PLZ like '" + plz + "%'";
+
+                try
+                {
+                    temp = data.Select(sql).CopyToDataTable();
+                    return temp;
+                }
+                catch (Exception)
+                {
+                    return temp;
+                }
+
+            }
+            return temp;
+
 
         }
 
