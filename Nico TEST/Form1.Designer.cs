@@ -127,7 +127,7 @@ namespace Nico_TEST
             this.Controls.Add(this.cbbLaender);
             this.Controls.Add(this.dgvDaten);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "KML Sotirumg";
             ((System.ComponentModel.ISupportInitialize)(this.dgvDaten)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
