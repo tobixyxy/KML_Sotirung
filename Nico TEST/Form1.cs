@@ -15,6 +15,8 @@ namespace Nico_TEST
     {
         Einlessen Einlessen = new Einlessen();
         DataTable data = new DataTable();
+        private string auswahl = "Bundesland";
+
         public Form1()
         {
             InitializeComponent();
@@ -35,11 +37,11 @@ namespace Nico_TEST
             }
             else if (cbbLaender.SelectedIndex > 0)
             {
-                sotirung("Bundesland", cbbLaender.SelectedItem.ToString());
+                sotirung(auswahl, cbbLaender.SelectedItem.ToString());
             }
             else if (txtPlz.Text != string.Empty)
             {
-                sotirung("Bundesland", txtPlz.Text);
+                sotirung(auswahl, txtPlz.Text);
             }            
         }
 
@@ -49,11 +51,11 @@ namespace Nico_TEST
             {
                 if (cbbLaender.SelectedIndex != 0)
                 {
-                    dgvDaten.DataSource =  sotirung("Bundesland", cbbLaender.SelectedItem.ToString());
+                    dgvDaten.DataSource =  sotirung(auswahl, cbbLaender.SelectedItem.ToString());
                     visibil();
                     if (txtPlz.Text != string.Empty)
                     {
-                        dgvDaten.DataSource = filter(sotirung("Bundesland", cbbLaender.SelectedItem.ToString()), txtPlz.Text);
+                        dgvDaten.DataSource = filter(sotirung(auswahl, cbbLaender.SelectedItem.ToString()), txtPlz.Text);
                         visibil();
                     }
                 }
@@ -78,7 +80,7 @@ namespace Nico_TEST
                     }
                     else if (cbbLaender.SelectedIndex != 0)
                     {
-                        dgvDaten.DataSource = sotirung("Bundesland", cbbLaender.SelectedItem.ToString());
+                        dgvDaten.DataSource = sotirung(auswahl, cbbLaender.SelectedItem.ToString());
                         visibil();
                     }
                 }
@@ -86,7 +88,7 @@ namespace Nico_TEST
                 {
                     if (cbbLaender.SelectedIndex != 0)
                     {
-                        dgvDaten.DataSource = filter(sotirung("Bundesland", cbbLaender.SelectedItem.ToString()), txtPlz.Text);
+                        dgvDaten.DataSource = filter(sotirung(auswahl, cbbLaender.SelectedItem.ToString()), txtPlz.Text);
                         visibil();
 
                     }
@@ -150,11 +152,11 @@ namespace Nico_TEST
                 try
                 {
                     temp = data.Select(sql).CopyToDataTable();
-                    return temp;
+                    //return temp;
                 }
                 catch (Exception)
                 {
-                    return temp;
+                    //return temp;
                 }
 
             }
@@ -165,7 +167,7 @@ namespace Nico_TEST
 
         private void visibil()
         {
-            if (dgvDaten.DataSource != null)
+            if (dgvDaten.DataSource != null && dgvDaten.RowCount != 0)
             {
                 dgvDaten.Columns["Styl"].Visible = false;
                 dgvDaten.Columns["Id"].Visible = false;
