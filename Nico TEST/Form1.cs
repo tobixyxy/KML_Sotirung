@@ -165,7 +165,7 @@ namespace Nico_TEST
 
         private void visibil()
         {
-            if (dgvDaten.DataSource != null && dgvDaten.DataSource.ToString() != "")
+            if (dgvDaten.DataSource != null)
             {
                 dgvDaten.Columns["Styl"].Visible = false;
                 dgvDaten.Columns["Id"].Visible = false;
