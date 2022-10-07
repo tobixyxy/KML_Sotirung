@@ -37,11 +37,13 @@ namespace Nico_TEST
             }
             else if (cbbLaender.SelectedIndex > 0)
             {
-                sotirung(auswahl, cbbLaender.SelectedItem.ToString());
+                dgvDaten.DataSource = sotirung(auswahl, cbbLaender.SelectedItem.ToString());
+                visibil();
             }
             else if (txtPlz.Text != string.Empty)
             {
-                sotirung(auswahl, txtPlz.Text);
+                dgvDaten.DataSource = sotirung(auswahl, txtPlz.Text);
+                visibil();
             }            
         }
 

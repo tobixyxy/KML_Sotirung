@@ -148,46 +148,35 @@ namespace Nico_TEST
                         #endregion
                         foreach (DataRow data in grid.Rows)
                         {
-                            int i = 0;
-                            while (all.Tables["Placemark"].Rows.Count>i)
-                            {
-                                if (data["Id"].ToString() == all.Tables["Placemark"].Rows[i]["Placemark_id"].ToString())
-                                {
-                                    XmlElement placemark = kml.CreateElement("Placemark");
-                                    kmldoc.AppendChild(placemark);
+                            var a = "Placemark_id = " + data["Id"].ToString();
+                            var test = all.Tables["Placemark"].Select(a);
 
-                                    XmlElement name = kml.CreateElement("name");
-                                    XmlText nametext = kml.CreateTextNode(all.Tables["Placemark"].Rows[i]["name"].ToString());
-                                    placemark.AppendChild(name);
-                                    name.AppendChild(nametext);
+                            XmlElement placemark = kml.CreateElement("Placemark");
+                            kmldoc.AppendChild(placemark);
 
-                                    XmlElement styleUrl = kml.CreateElement("styleUrl");
-                                    XmlText strleUrlText = kml.CreateTextNode(all.Tables["Placemark"].Rows[i]["styleUrl"].ToString());
-                                    placemark.AppendChild(styleUrl);
-                                    styleUrl.AppendChild(strleUrlText);
+                            XmlElement name = kml.CreateElement("name");
+                            XmlText nametext = kml.CreateTextNode(test[0]["name"].ToString());
+                            placemark.AppendChild(name);
+                            name.AppendChild(nametext);
 
-                                    XmlElement Point = kml.CreateElement("Point");
-                                    placemark.AppendChild(Point);
+                            XmlElement styleUrl = kml.CreateElement("styleUrl");
+                            XmlText strleUrlText = kml.CreateTextNode(test[0]["styleUrl"].ToString());
+                            placemark.AppendChild(styleUrl);
+                            styleUrl.AppendChild(strleUrlText);
 
-                                    XmlElement coordinates = kml.CreateElement("coordinates");
-                                    Point.AppendChild(coordinates);
-                                    int n = 0;
-                                    while (all.Tables["Point"].Rows.Count > n)
-                                    {
-                                        if (data["Id"].ToString() == all.Tables["Point"].Rows[n]["Placemark_id"].ToString())
-                                        {
-                                            XmlText coordinatesText = kml.CreateTextNode(all.Tables["Point"].Rows[n]["coordinates"].ToString());
-                                            coordinates.AppendChild(coordinatesText);
-                                            break;
-                                        }
-                                        n++;
-                                    }
-                                    break;
-                                }
-                                i++;
-                            }
+                            XmlElement Point = kml.CreateElement("Point");
+                            placemark.AppendChild(Point);
+
+                            XmlElement coordinates = kml.CreateElement("coordinates");
+                            Point.AppendChild(coordinates);
+                            
+                            var point = all.Tables["Point"].Select(a);
+                            XmlText coordinatesText = kml.CreateTextNode(point[0]["coordinates"].ToString());
+                            coordinates.AppendChild(coordinatesText);
+
                             bar.PerformStep();
                         }
+                            
                         kml.Save(save.FileName);
                         MessageBox.Show("fertig");
                     }
