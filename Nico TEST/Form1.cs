@@ -136,10 +136,6 @@ namespace Nico_TEST
                 }
                 i++;
             }
-            /*
-            dgvDaten.DataSource = table;
-            dgvDaten.Columns["Styl"].Visible = false;
-            dgvDaten.Columns["Id"].Visible = false;*/
             return table;
 
         }
@@ -154,11 +150,10 @@ namespace Nico_TEST
                 try
                 {
                     temp = data.Select(sql).CopyToDataTable();
-                    //return temp;
                 }
                 catch (Exception)
                 {
-                    //return temp;
+
                 }
 
             }
