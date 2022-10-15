@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
+﻿using System.Data;
 using System.IO;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -23,16 +16,18 @@ namespace Nico_TEST
         }
         public void erstellung(ProgressBar bar)
         {
+            //erstellung der datei
             SaveFileDialog save = new SaveFileDialog();
             save.Filter = "kml files (*.kml)|*.kml|All files (*.*)|*.*";
             save.RestoreDirectory = true;
             save.OverwritePrompt = true;
-            if (save.ShowDialog() == DialogResult.OK)
+            if (save.ShowDialog() == DialogResult.OK) //hollten des phades
             {
                 if (grid != null)
                 {
                     if (grid.Rows.Count>0)
                     {
+                        //erstelung der kml
                         XmlDocument kml = new XmlDocument();
                         XmlDeclaration DKml = kml.CreateXmlDeclaration("1.0", "UTF-8", null);
                         XmlElement element = kml.CreateElement("kml");
@@ -148,8 +143,9 @@ namespace Nico_TEST
                         #endregion
                         foreach (DataRow data in grid.Rows)
                         {
+                            //daten filter
                             var a = "Placemark_id = " + data["Id"].ToString();
-                            var test = all.Tables["Placemark"].Select(a);
+                            var test = all.Tables["Placemark"].Select(a); //filter der daten per select befehl , grunddaten
 
                             XmlElement placemark = kml.CreateElement("Placemark");
                             kmldoc.AppendChild(placemark);
@@ -170,11 +166,11 @@ namespace Nico_TEST
                             XmlElement coordinates = kml.CreateElement("coordinates");
                             Point.AppendChild(coordinates);
                             
-                            var point = all.Tables["Point"].Select(a);
+                            var point = all.Tables["Point"].Select(a); //filter der daten per select befehl koordinaten
                             XmlText coordinatesText = kml.CreateTextNode(point[0]["coordinates"].ToString());
                             coordinates.AppendChild(coordinatesText);
 
-                            bar.PerformStep();
+                            bar.PerformStep(); //hochzählen der proges bar
                         }
                             
                         kml.Save(save.FileName);
