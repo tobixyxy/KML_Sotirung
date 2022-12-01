@@ -43,39 +43,6 @@ namespace Nico_TEST
         private void txtPlz_TextChanged(object sender, EventArgs e)
         {
             datenanzeigen();
-            /*
-            if (data.Columns.Count > 0)
-            {
-                if (txtPlz.Text == String.Empty)
-                {
-                    if (txtPlz.Text == string.Empty && cbbLaender.SelectedIndex == 0)
-                    {
-                        dgvDaten.DataSource = data;
-                        visibil();
-                    }
-                    else if (cbbLaender.SelectedIndex != 0)
-                    {
-                        dgvDaten.DataSource = sotirung(auswahl, cbbLaender.SelectedItem.ToString());
-                        visibil();
-                    }
-                }
-                else
-                {
-                    if (cbbLaender.SelectedIndex != 0)
-                    {
-                        dgvDaten.DataSource = filter(sotirung(auswahl, cbbLaender.SelectedItem.ToString()), txtPlz.Text);
-                        visibil();
-
-                    }
-                    else
-                    {
-                        dgvDaten.DataSource = filter(data, txtPlz.Text);
-                        visibil();
-                    }
-                } 
-                
-            }       
-            */
         }
         DataTable table = new DataTable();
         public DataTable sotirung(string Rows, string suche)
