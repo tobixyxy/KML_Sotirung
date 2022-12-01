@@ -23,6 +23,7 @@ namespace Nico_TEST
             string[] test = { "","Banden-Württenberg","Berlin","Bayern","Sachsen","Brandenburg","Thüringen","Sachsen-Anhalt","Mecklenburg-Vorpommern","Niedersachsen","Hamburg","Schleswig-Holstein","Bremen","Nordrhein-Westfalen","Saarland"};
             cbbLaender.DataSource = test;
             pgbVortschrit.Visible = false;
+            btAugaben.Visible = false;
             
         }
 
@@ -30,47 +31,19 @@ namespace Nico_TEST
         {
             Data_Verarbeitung work = new Data_Verarbeitung(Einlessen.read());
             data = work.date_ana();
-            if (txtPlz.Text == string.Empty && cbbLaender.SelectedIndex == 0)
-            {
-                dgvDaten.DataSource = data;
-                visibil();
-            }
-            else if (cbbLaender.SelectedIndex > 0)
-            {
-                dgvDaten.DataSource = sotirung(auswahl, cbbLaender.SelectedItem.ToString());
-                visibil();
-            }
-            else if (txtPlz.Text != string.Empty)
-            {
-                dgvDaten.DataSource = sotirung(auswahl, txtPlz.Text);
-                visibil();
-            }            
+            datenanzeigen();
+            btAugaben.Visible = true;
         }
 
         private void cbbLaender_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (data.Columns.Count > 0)
-            {
-                if (cbbLaender.SelectedIndex != 0)
-                {
-                    dgvDaten.DataSource =  sotirung(auswahl, cbbLaender.SelectedItem.ToString());
-                    visibil();
-                    if (txtPlz.Text != string.Empty)
-                    {
-                        dgvDaten.DataSource = filter(sotirung(auswahl, cbbLaender.SelectedItem.ToString()), txtPlz.Text);
-                        visibil();
-                    }
-                }
-                else if (cbbLaender.SelectedIndex == 0)
-                {
-                    dgvDaten.DataSource = data;
-                    visibil();
-                }
-            }
+            datenanzeigen();
         }
 
         private void txtPlz_TextChanged(object sender, EventArgs e)
         {
+            datenanzeigen();
+            /*
             if (data.Columns.Count > 0)
             {
                 if (txtPlz.Text == String.Empty)
@@ -100,7 +73,9 @@ namespace Nico_TEST
                         visibil();
                     }
                 } 
+                
             }       
+            */
         }
         DataTable table = new DataTable();
         public DataTable sotirung(string Rows, string suche)
@@ -179,6 +154,44 @@ namespace Nico_TEST
             Ausgabe ausgabe = new Ausgabe(Einlessen.data,table);
             ausgabe.erstellung(pgbVortschrit);
             pgbVortschrit.Visible = false;
+        }
+
+        private void datenanzeigen()
+        {
+            if (data.Columns.Count > 0)
+            {
+                if (txtPlz.Text == string.Empty && cbbLaender.SelectedIndex == 0)
+                {
+                    dgvDaten.DataSource = data;
+                    visibil();
+                }
+                else if (cbbLaender.SelectedIndex > 0)
+                {
+                    if (txtPlz.Text != string.Empty)
+                    {
+                        dgvDaten.DataSource = filter(sotirung(auswahl, cbbLaender.SelectedItem.ToString()), txtPlz.Text);
+                        visibil();
+                    }
+                    else
+                    {
+                        dgvDaten.DataSource = sotirung(auswahl, cbbLaender.SelectedItem.ToString());
+                        visibil();
+                    }
+                }
+                else if (txtPlz.Text != string.Empty)
+                {
+                    if (cbbLaender.SelectedIndex < 0)
+                    {
+                        dgvDaten.DataSource = filter(sotirung(auswahl, cbbLaender.SelectedItem.ToString()), txtPlz.Text);
+                        visibil();
+                    }
+                    else
+                    {
+                        dgvDaten.DataSource = sotirung(auswahl, txtPlz.Text);
+                        visibil();
+                    }
+                }
+            }
         }
     }
 }
